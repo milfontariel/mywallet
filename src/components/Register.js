@@ -1,18 +1,20 @@
-import { Link } from "react-router-dom";
-import styled from "styled-components";
 import Container from "./Container";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-export default function Login() {
+export default function Register(){
     return (
         <Container>
             <Logo>MyWallet</Logo>
             <FormBox>
-                    <Info>Faça seu login</Info>
+                    <Info>Crie sua conta</Info>
                 <Form>
+                    <Input required type='text' placeholder='Nome'></Input>
                     <Input required type='email' placeholder='E-mail'></Input>
                     <Input required type='password' placeholder='Senha'></Input>
-                    <Button type='submit'>ENTRAR</Button>
-                    <Link to={'/register'}><p>Primeira vez? Cadastre-se!</p></Link>
+                    <Input required type='password' placeholder='Confirme a senha'></Input>
+                    <Button type='submit'>CRIAR CONTA</Button>
+                    <Link to={'/register'}><p>Já tem uma conta? Entre agora!</p></Link>
                 </Form>
             </FormBox>
         </Container>
