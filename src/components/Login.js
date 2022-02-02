@@ -34,7 +34,6 @@ const Logo = styled.div`
     font-weight: bold;
     color: #fff;
     margin-top: 2rem;
-    position: absolute;
     font-family: 'Lato', sans-serif;
 `
 
@@ -67,12 +66,8 @@ const FormBox = styled.div`
     border-radius: 10px;
     gap: 10px;
     align-items: center;
-    margin: 6rem auto 0;
-    position: absolute;
-    left: 0;
-    right: 0;
     padding: 2rem 0 ;
-    
+    margin: 2rem auto 2rem;
 `
 
 const Input = styled.input`
