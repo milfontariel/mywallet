@@ -2,8 +2,11 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function Register() {
+    const MySwal = withReactContent(Swal);
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -12,6 +15,22 @@ export default function Register() {
 
     async function handlerRegister(e) {
         e.preventDefault();
+        if(password !== repeatPassword){
+            await MySwal.fire(
+                {
+                    title: `As senhas não conferem`,
+                    icon: 'error',
+                    iconColor: '#8C11BE',
+                    confirmButtonColor: '#8C11BE',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+            );
+            return
+        }
+        
         try {
             const upperName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
             const registerData = {
@@ -21,12 +40,35 @@ export default function Register() {
                 repeatPassword
             };
             await axios.post('http://localhost:5000/register', registerData);
+            await MySwal.fire(
+                {
+                    title: `Conta criada com sucesso`,
+                    icon: 'success',
+                    iconColor: '#8C11BE',
+                    confirmButtonColor: '#8C11BE',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000
+                }
+            );
             navigate('/');
 
         } catch (error) {
-            if(error.response.status === 409){
-                console.log("E-mail já cadastrado");
-            }
+            const msg = error.response.data;
+            await MySwal.fire(
+                {
+                    title: `${msg}`,
+                    icon: 'error',
+                    iconColor: '#8C11BE',
+                    confirmButtonColor: '#8C11BE',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+            );
+            
         }
     }
 
@@ -36,7 +78,7 @@ export default function Register() {
             <FormBox>
                 <Info>Crie sua conta</Info>
                 <Form onSubmit={handlerRegister}>
-                    <Input required type='text' placeholder='Nome' value={name} onChange={(e) => setName(e.target.value)}></Input>
+                    <Input required type='text' placeholder='Primeiro nome' value={name} onChange={(e) => setName(e.target.value)}></Input>
                     <Input required type='email' placeholder='E-mail' value={email} onChange={(e) => setEmail(e.target.value)}></Input>
                     <Input required type='password' placeholder='Senha' value={password} onChange={(e) => setPassword(e.target.value)}></Input>
                     <Input required type='password' placeholder='Confirme a senha' value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)}></Input>

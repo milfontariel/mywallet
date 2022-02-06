@@ -3,9 +3,11 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Contexts from "../Contexts";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function Login() {
-
+    const MySwal = withReactContent(Swal);
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -23,7 +25,19 @@ export default function Login() {
             setName(data.name);
             navigate('/home');
         } catch (error) {
-            console.log(error.response);
+            const msg = error.response.data;
+            await MySwal.fire(
+                {
+                    title: `${msg}`,
+                    icon: 'error',
+                    iconColor: '#8C11BE',
+                    confirmButtonColor: '#8C11BE',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+            );
         }
     }
 

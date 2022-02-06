@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 
 function Summary() {
-    const MySwal = withReactContent(Swal)
+    const MySwal = withReactContent(Swal);
     const { token, summaryItems, setSummaryItems } = useContext(Contexts);
     const navigate = useNavigate();
     const config = {
@@ -25,6 +25,7 @@ function Summary() {
     async function deleteItem(id) {
         try {
             MySwal.fire({
+                toast: true,
                 title: 'Você tem certeza?',
                 text: "Você não pode reverter esta ação!",
                 icon: 'warning',
@@ -35,7 +36,6 @@ function Summary() {
                 cancelButtonText: 'Não, cancelar!',
                 cancelButtonColor: '#a6a6a6',
                 reverseButtons: true,
-                backdrop: `#8C11BE`
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     await axios.delete(`http://localhost:5000/summary-history/${id}`, config);
@@ -44,13 +44,15 @@ function Summary() {
                         {
                             title: 'Apagado!',
                             text: 'Seu registro foi apagado.',
-                            icon: 'sucess',
+                            icon: 'success',
                             iconColor: '#8C11BE',
                             confirmButtonColor: '#8C11BE',
-                            backdrop: `#8C11BE`
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 2000
                         }
                     );
-
                 } else if (
                     result.dismiss === Swal.DismissReason.cancel
                 ) {
@@ -61,7 +63,10 @@ function Summary() {
                             icon: 'error',
                             iconColor: '#8C11BE',
                             confirmButtonColor: '#8C11BE',
-                            backdrop: `#8C11BE`
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 2000
                         }
                     )
                 }

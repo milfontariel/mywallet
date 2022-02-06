@@ -4,8 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Contexts from "../Contexts";
 import {mask, unMask} from 'remask';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function Entry() {
+    const MySwal = withReactContent(Swal);
     const [value, setValue] = useState('');
     const [description, setDescription] = useState('');
     const navigate = useNavigate();
@@ -23,6 +26,18 @@ export default function Entry() {
             });
             setValue('');
             setDescription('');
+            await MySwal.fire(
+                {
+                    title: `Adicionado`,
+                    icon: 'success',
+                    iconColor: '#8C11BE',
+                    confirmButtonColor: '#8C11BE',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1500
+                }
+            );
             setTimeout(() => {
                 navigate('/home');
             }, 500);
@@ -30,7 +45,18 @@ export default function Entry() {
             if(error.response.status === 401){
                 navigate('/');
             }
-            console.log(error.response);
+            await MySwal.fire(
+                {
+                    title: `${error.response.data}`,
+                    icon: 'error',
+                    iconColor: '#8C11BE',
+                    confirmButtonColor: '#8C11BE',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000
+                }
+            );
         }
     }
 

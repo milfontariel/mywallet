@@ -2,14 +2,25 @@ import styled from "styled-components";
 import In from '../assets/in.svg';
 import Out from '../assets/out.svg';
 import LogoutImg from '../assets/logout.svg';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Summary from "./Summary";
 import Contexts from "../Contexts";
 import { useContext } from "react";
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import axios from "axios";
 
 export default function Home() {
-    const { name, summaryItems } = useContext(Contexts);
+    const navigate = useNavigate();
+    const MySwal = withReactContent(Swal);
+    const { name, summaryItems, token } = useContext(Contexts);
     let balance = 0;
+    const config = {
+        headers:
+        {
+            "Authorization": `Bearer ${token}`
+        }
+    }
 
     for (const item of summaryItems) {
         let aux = item.value.replace(',', '.');
@@ -20,12 +31,40 @@ export default function Home() {
         }
     }
 
+    function logout(token){
+        try {
+            MySwal.fire({
+                toast: true,
+                title: 'Quer mesmo sair?',
+                icon: 'warning',
+                iconColor: '#8C11BE',
+                showCancelButton: true,
+                confirmButtonText: 'Sim',
+                confirmButtonColor: '#8C11BE',
+                cancelButtonText: 'Cancelar',
+                cancelButtonColor: '#a6a6a6',
+                reverseButtons: true,
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        await axios.delete(`http://localhost:5000/`, config);
+                        navigate('/');
+                    } catch (error) {
+                        navigate('/');
+                    }
+                } 
+            })
+        } catch (error) {
+            
+        }
+    }
+
     return (
         <Container>
             <Header>
                 <Welcome>Olá, {name}</Welcome>
-                <Logout>
-                    <Link to={'/'}><img src={LogoutImg} alt="Sair"></img></Link>
+                <Logout onClick={() => logout(token)}>
+                    <img src={LogoutImg} alt="Sair"></img>
                 </Logout>
             </Header>
             <Resume>
