@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Contexts from "../Contexts";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import BASE_URL from "../services/api";
 
 export default function Login() {
     const MySwal = withReactContent(Swal);
@@ -20,7 +21,7 @@ export default function Login() {
                 email,
                 password
             };
-            const { data } = await axios.post('http://localhost:5000/', loginData);
+            const { data } = await axios.post(`${BASE_URL}/`, loginData);
             setToken(data.token);
             setName(data.name);
             navigate('/home');
