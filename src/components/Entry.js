@@ -6,6 +6,7 @@ import Contexts from "../Contexts";
 import {mask, unMask} from 'remask';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import BASE_URL from '../services/api.js';
 
 export default function Entry() {
     const MySwal = withReactContent(Swal);
@@ -16,7 +17,7 @@ export default function Entry() {
     async function handlerPut(e){
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/input', {
+            await axios.post(`${BASE_URL}/input`, {
                 value,
                 description
             }, {

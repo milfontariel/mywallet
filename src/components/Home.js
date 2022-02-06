@@ -9,6 +9,7 @@ import { useContext } from "react";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import axios from "axios";
+import BASE_URL from "../services/api";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -47,7 +48,7 @@ export default function Home() {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
-                        await axios.delete(`http://localhost:5000/`, config);
+                        await axios.delete(`${BASE_URL}/`, config);
                         navigate('/');
                     } catch (error) {
                         navigate('/');

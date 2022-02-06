@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import BASE_URL from "../services/api";
 
 export default function Register() {
     const MySwal = withReactContent(Swal);
@@ -39,7 +40,7 @@ export default function Register() {
                 password,
                 repeatPassword
             };
-            await axios.post('http://localhost:5000/register', registerData);
+            await axios.post(`${BASE_URL}/register`, registerData);
             await MySwal.fire(
                 {
                     title: `Conta criada com sucesso`,

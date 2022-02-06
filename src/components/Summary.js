@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Contexts from "../Contexts";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import BASE_URL from "../services/api";
 
 function Summary() {
     const MySwal = withReactContent(Swal);
@@ -38,7 +39,7 @@ function Summary() {
                 reverseButtons: true,
             }).then(async (result) => {
                 if (result.isConfirmed) {
-                    await axios.delete(`http://localhost:5000/summary-history/${id}`, config);
+                    await axios.delete(`${BASE_URL}/summary-history/${id}`, config);
                     getSummary();
                     MySwal.fire(
                         {
@@ -82,7 +83,7 @@ function Summary() {
             return
         }
         try {
-            const promise = await axios.get('http://localhost:5000/summary-history', config);
+            const promise = await axios.get(`${BASE_URL}/summary-history`, config);
             setSummaryItems(promise.data);
         } catch (error) {
             console.log(error);
