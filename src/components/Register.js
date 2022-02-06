@@ -1,25 +1,64 @@
-import Container from "./Container";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
 
-export default function Register(){
+export default function Register() {
+    const navigate = useNavigate();
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [repeatPassword, setRepeatPassword] = useState('');
+
+    async function handlerRegister(e) {
+        e.preventDefault();
+        try {
+            const upperName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+            const registerData = {
+                name: upperName,
+                email,
+                password,
+                repeatPassword
+            };
+            await axios.post('http://localhost:5000/register', registerData);
+            navigate('/');
+
+        } catch (error) {
+            if(error.response.status === 409){
+                console.log("E-mail já cadastrado");
+            }
+        }
+    }
+
     return (
         <Container>
             <Logo>MyWallet</Logo>
             <FormBox>
-                    <Info>Crie sua conta</Info>
-                <Form>
-                    <Input required type='text' placeholder='Nome'></Input>
-                    <Input required type='email' placeholder='E-mail'></Input>
-                    <Input required type='password' placeholder='Senha'></Input>
-                    <Input required type='password' placeholder='Confirme a senha'></Input>
+                <Info>Crie sua conta</Info>
+                <Form onSubmit={handlerRegister}>
+                    <Input required type='text' placeholder='Nome' value={name} onChange={(e) => setName(e.target.value)}></Input>
+                    <Input required type='email' placeholder='E-mail' value={email} onChange={(e) => setEmail(e.target.value)}></Input>
+                    <Input required type='password' placeholder='Senha' value={password} onChange={(e) => setPassword(e.target.value)}></Input>
+                    <Input required type='password' placeholder='Confirme a senha' value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)}></Input>
                     <Button type='submit'>CRIAR CONTA</Button>
-                    <Link to={'/register'}><p>Já tem uma conta? Entre agora!</p></Link>
+                    <Link to={'/'}><p>Já tem uma conta? Entre agora!</p></Link>
                 </Form>
             </FormBox>
         </Container>
     )
 }
+const Container = styled.div`
+    background-color: #8C11BE;
+    background-image: linear-gradient(330deg, #8c11be 0%, #a111be 100%);
+    width: 100%;
+    height: 100vh;
+    max-width: 500px;
+    margin:0 auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`
 
 const Info = styled.div`
     font-size: 1.5rem;
@@ -42,13 +81,13 @@ const Logo = styled.div`
 const Form = styled.form`
     padding: 1rem 3rem 0;
     transition: all 250ms ease;
-    margin-bottom: 1rem;
     & p {
         text-decoration: none;
         color: #8C11BE;
         font-weight: bold;
         font-size: 14px;
         text-align: center;
+        padding-top: 1rem;
         cursor: pointer;
         &:hover {
             color: #222;
@@ -61,15 +100,15 @@ const Form = styled.form`
 
 const FormBox = styled.div`
     width: 90%;
-    max-width: 400px;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     background-color: #fff;
     border-radius: 10px;
-    gap: 10px;
     align-items: center;
     padding: 2rem 0 ;
     margin: 2rem auto 2rem;
+    position: relative;
 `
 
 const Input = styled.input`
@@ -102,7 +141,7 @@ const Button = styled.button`
     color: #8C11BE;
     font-weight: bold;
     transition: all .25s ease-out;
-    margin: 2rem 0;
+    margin-top: 1rem;
     &:hover{
         cursor: pointer;
         background-color: #8C11BE;

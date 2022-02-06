@@ -1,16 +1,41 @@
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Container from "./Container";
+import Contexts from "../Contexts";
 
 export default function Login() {
+
+    const navigate = useNavigate();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { setToken, setName } = useContext(Contexts);
+
+    async function handlerLogin(e) {
+        e.preventDefault();
+        try {
+            const loginData = {
+                email,
+                password
+            };
+            const { data } = await axios.post('http://localhost:5000/', loginData);
+            setToken(data.token);
+            setName(data.name);
+            navigate('/home');
+        } catch (error) {
+            console.log(error.response);
+        }
+    }
+
+
     return (
         <Container>
             <Logo>MyWallet</Logo>
             <FormBox>
-                    <Info>Faça seu login</Info>
-                <Form>
-                    <Input required type='email' placeholder='E-mail'></Input>
-                    <Input required type='password' placeholder='Senha'></Input>
+                <Info>Faça seu login</Info>
+                <Form onSubmit={handlerLogin}>
+                    <Input required type='email' placeholder='E-mail' value={email} onChange={e => setEmail(e.target.value)}></Input>
+                    <Input required type='password' placeholder='Senha' value={password} onChange={e => setPassword(e.target.value)}></Input>
                     <Button type='submit'>ENTRAR</Button>
                     <Link to={'/register'}><p>Primeira vez? Cadastre-se!</p></Link>
                 </Form>
@@ -18,6 +43,20 @@ export default function Login() {
         </Container>
     )
 }
+
+const Container = styled.div`
+    background-color: #8C11BE;
+    background-image: linear-gradient(330deg, #8c11be 0%, #a111be 100%);
+    width: 100%;
+    max-width: 500px;
+    height: 100vh;
+    margin:0 auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+`
 
 const Info = styled.div`
     font-size: 1.5rem;
@@ -59,7 +98,7 @@ const Form = styled.form`
 
 const FormBox = styled.div`
     width: 90%;
-    max-width: 400px;
+    max-width: 500px;
     display: flex;
     flex-direction: column;
     background-color: #fff;
