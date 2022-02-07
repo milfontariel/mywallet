@@ -34,9 +34,10 @@ export default function Register() {
         
         try {
             const upperName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+            const emailLower = email.toLowerCase();
             const registerData = {
                 name: upperName,
-                email,
+                email: emailLower,
                 password,
                 repeatPassword
             };

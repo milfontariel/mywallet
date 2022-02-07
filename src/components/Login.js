@@ -15,10 +15,12 @@ export default function Login() {
     const { setToken, setName } = useContext(Contexts);
 
     async function handlerLogin(e) {
+        
         e.preventDefault();
+        const emailLower = email.toLowerCase();
         try {
             const loginData = {
-                email,
+                email: emailLower,
                 password
             };
             const { data } = await axios.post(`${BASE_URL}/`, loginData);
