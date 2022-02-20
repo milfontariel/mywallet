@@ -2,12 +2,12 @@
 
 Wallet for control of inputs and outputs
 
-## Backend:
+## Backend
 
 https://github.com/milfontariel/mywallet-backend
 
 
-## Techs:
+## Techs
 
 - ReactJS
 - NodeJS ([backend](https://github.com/milfontariel/mywallet-backend))
