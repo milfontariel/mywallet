@@ -37,13 +37,16 @@ Windows, Linux e macOS:
 1. Clone o projeto com git clone ou baixe-o manualmente.
 ```
 ```
-2. Vá até o diretório baixado, abra o terminal e rode o seguinte comando:
+2. Vá até o diretório baixado, abra o terminal e rode os seguintes comandos:
 ```
 ```
-3. npm run start
+3. npm i
 ```
 ```
-4. Em seu navegador acesse o seguinte endereço: http://localhost:3000
+4. npm run start
+```
+```
+5. Em seu navegador acesse o seguinte endereço: http://localhost:3000
 ```
 
 
